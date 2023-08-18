@@ -1,5 +1,6 @@
 const http = require("http");
-const { QueryInsert, QueryInsertUpdate, QueryUpdate, QueryDelete, CollectionDelete, CollectionCreate } = require("./mongoExecutor");
+const { QueryInsert, QueryInsertUpdate, QueryUpdate, QueryDelete, CollectionDelete, CollectionCreate, QuerySelect } = require("./mongoExecutor");
+const port = 2023;
 
 /**
  * Do the HTTP response
@@ -18,7 +19,7 @@ function sendResponse(res, status, body, contentType = "application/json") {
      res.end();
 }
 
-http.createServer((req,res)=>{
+const server = http.createServer((req,res)=>{
 
      let body="";
      req.on("data",(chunk)=>{
@@ -56,4 +57,14 @@ http.createServer((req,res)=>{
 
      });
 
-});
+})
+
+//server.listen(port);
+
+QuerySelect("Walletter","WT_USERS").then(resquery=>{
+     console.log(resquery)
+})
+
+QuerySelect("Walletter","WT_TRANSACTIONS").then(resquery=>{
+     console.log(resquery)
+})
