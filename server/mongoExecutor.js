@@ -1,6 +1,4 @@
 //THIS CLASS IS A BRIDGE FROM HTTPS SERVER AND MONGODB
-
-
 const url = "mongodb://localhost:27017/";
 const { MongoClient } = require("mongodb");
 const { ObjectId } = require('mongodb');
@@ -16,25 +14,49 @@ function CollectionDelete(){
 
 ////////////////////
 
-function QuerySelect(database,collection,parameters){
+/**
+ * SELECT
+ * @param {string} database name of db
+ * @param {*} collection name of the collection (SQL - TABLE)
+ * @param {object} paramDelete is the WHERE of SQL
+ * @returns {Promise} the outcome of the query
+ */
+function QuerySelect(database,collection,parameters={}){
      const dbLocal = new MongoClient(url+database).db(database);
      return dbLocal.collection(collection).find(parameters).toArray()
 }
 
-
+/**
+ * INSERT MANY
+ * @param {string} database name of db
+ * @param {*} collection name of the collection (SQL - TABLE)
+ * @param {Array of objects} paramDelete inser many objects
+ * @returns {Promise} the outcome of the query
+ */
 function QueryInsert(database, collection, objDataInsert){
      const dbLocal = new MongoClient(url + database).db(database);
      return dbLocal.collection(collection).insertMany(objDataInsert);
 }
 ////
 
-
-function QueryDelete(database, collection, id) { //one, many
-     //TODO: how to do the ID?
+/**
+ * DELETE MANY
+ * @param {string} database name of db
+ * @param {*} collection name of the collection (SQL - TABLE)
+ * @param {object} paramDelete is the WHERE of SQL
+ * @returns {Promise} the outcome of the query
+ */
+function QueryDelete(database, collection, paramDelete={}) {
      const dbLocal = new MongoClient(url + database).db(database);
-
-     return dbLocal.collection(collection).deleteOne({ "_id": new ObjectId(id), "Email": Email })
+     return dbLocal.collection(collection).deleteMany(paramDelete);
 }
+
+//TODO: TEST!
+function QueryUpdate(database, collection, paramDelete) {
+     const dbLocal = new MongoClient(url + database).db(database);
+     return dbLocal.collection(collection).updateMany(paramUpdate)
+}
+
 
 
 //////
@@ -65,13 +87,6 @@ function QueryInsertUpdate(){
           return null;
      })
 }
-
-
-function QueryUpdate(){
-
-}
-
-
 
 
 module.exports = {

@@ -33,21 +33,34 @@ const server = http.createServer((req,res)=>{
           }
 
           if(req.url=="QuerySelect"){
+               QuerySelect(body.database, body.collection, body?.where).then(resSelect=>{
+                    sendResponse(res,200,resSelect);
+               }).catch(err=>{
+                    sendResponse(res,500,err);
+               })
                
           }else if(req.url=="QueryInsert"){
-               QueryInsert(body.collection,body.data).then(queryRes=>{
-                    sendResponse(res,200,queryRes);    
+               QueryInsert(body.database,body.collection,body.data).then(resInsert=>{
+                    sendResponse(res,200,resInsert);
+               }).catch(err=>{
+                    sendResponse(res,500,err);
                })
           }else if(req.url=="QueryInsertUpdate"){
+               //TODO:
                QueryInsertUpdate();
           }else if(req.url=="QueryUpdate"){
+               //TODO:
                QueryUpdate();
           }else if(req.url="QueryDelete"){
-               QueryDelete();
+               QueryDelete(body.database,body.collection,body?.where).then(resDelete=>{
+                    sendResponse(res,200,resDelete);
+               }).catch(err=>{
+                    sendResponse(res,500,err);
+               });
           }
 
           //COLLECTIONS
-
+          //TODO:
           if(req.url=="CollectionCreate"){
                CollectionCreate();
           }else if(req.url="CollectionDelete"){
@@ -59,12 +72,25 @@ const server = http.createServer((req,res)=>{
 
 })
 
-//server.listen(port);
+server.listen(port);
 
-QuerySelect("Walletter","WT_USERS").then(resquery=>{
-     console.log(resquery)
-})
 
-QuerySelect("Walletter","WT_TRANSACTIONS").then(resquery=>{
-     console.log(resquery)
-})
+
+////////////////////////////
+//EXAMPLES
+
+// QuerySelect("Walletter","TEST").then(resquery=>{
+//      console.log(resquery)
+// })
+
+
+
+// QueryInsert("Walletter","TEST",[{mykey:"myvalue"}]).then(resInsert=>{
+//      console.log(resInsert);
+// })
+
+
+// QueryDelete("Walletter","TEST",{mykey:"myvalue"}).then(resDelete=>{
+//      console.log(resDelete);
+// })
+
