@@ -1,5 +1,4 @@
 //THIS CLASS IS A BRIDGE FROM HTTPS SERVER AND MONGODB
-const url = "mongodb://localhost:27017/";
 const { MongoClient } = require("mongodb");
 const { ObjectId } = require('mongodb');
 
@@ -9,7 +8,7 @@ function CollectionCreate(){
      
 }
 function CollectionDelete(){
-
+     
 }
 
 ////////////////////
@@ -21,7 +20,7 @@ function CollectionDelete(){
  * @param {object} paramDelete is the WHERE of SQL
  * @returns {Promise} the outcome of the query
  */
-function QuerySelect(database,collection,parameters={}){
+function QuerySelect(url="mongodb://localhost:27017/",database,collection,parameters={}){
      const dbLocal = new MongoClient(url+database).db(database);
      return dbLocal.collection(collection).find(parameters).toArray()
 }
@@ -33,7 +32,7 @@ function QuerySelect(database,collection,parameters={}){
  * @param {Array of objects} paramDelete inser many objects
  * @returns {Promise} the outcome of the query
  */
-function QueryInsert(database, collection, objDataInsert){
+function QueryInsert(url = "mongodb://localhost:27017/",database, collection, objDataInsert){
      const dbLocal = new MongoClient(url + database).db(database);
      return dbLocal.collection(collection).insertMany(objDataInsert);
 }
@@ -46,13 +45,13 @@ function QueryInsert(database, collection, objDataInsert){
  * @param {object} paramDelete is the WHERE of SQL
  * @returns {Promise} the outcome of the query
  */
-function QueryDelete(database, collection, paramDelete={}) {
+function QueryDelete(url = "mongodb://localhost:27017/",database, collection, paramDelete={}) {
      const dbLocal = new MongoClient(url + database).db(database);
      return dbLocal.collection(collection).deleteMany(paramDelete);
 }
 
 //TODO: TEST!
-function QueryUpdate(database, collection, paramDelete) {
+function QueryUpdate(url = "mongodb://localhost:27017/",database, collection, paramDelete) {
      const dbLocal = new MongoClient(url + database).db(database);
      return dbLocal.collection(collection).updateMany(paramUpdate)
 }

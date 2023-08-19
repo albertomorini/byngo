@@ -33,14 +33,14 @@ const server = http.createServer((req,res)=>{
           }
 
           if(req.url=="QuerySelect"){
-               QuerySelect(body.database, body.collection, body?.where).then(resSelect=>{
+               QuerySelect(body.url,body.database, body.collection, body?.where).then(resSelect=>{
                     sendResponse(res,200,resSelect);
                }).catch(err=>{
                     sendResponse(res,500,err);
                })
                
           }else if(req.url=="QueryInsert"){
-               QueryInsert(body.database,body.collection,body.data).then(resInsert=>{
+               QueryInsert(body.url,body.database,body.collection,body.data).then(resInsert=>{
                     sendResponse(res,200,resInsert);
                }).catch(err=>{
                     sendResponse(res,500,err);
@@ -52,7 +52,7 @@ const server = http.createServer((req,res)=>{
                //TODO:
                QueryUpdate();
           }else if(req.url="QueryDelete"){
-               QueryDelete(body.database,body.collection,body?.where).then(resDelete=>{
+               QueryDelete(body.url,body.database,body.collection,body?.where).then(resDelete=>{
                     sendResponse(res,200,resDelete);
                }).catch(err=>{
                     sendResponse(res,500,err);
@@ -72,25 +72,25 @@ const server = http.createServer((req,res)=>{
 
 })
 
-server.listen(port);
+// server.listen(port);
 
 
 
 ////////////////////////////
 //EXAMPLES
 
-// QuerySelect("Walletter","TEST").then(resquery=>{
-//      console.log(resquery)
-// })
+QuerySelect(undefined,"Walletter","TEST").then(resquery=>{
+     console.log(resquery)
+})
 
 
 
-// QueryInsert("Walletter","TEST",[{mykey:"myvalue"}]).then(resInsert=>{
+// QueryInsert(undefined,"Walletter","TEST",[{mykey:"myvalue"}]).then(resInsert=>{
 //      console.log(resInsert);
 // })
 
 
-// QueryDelete("Walletter","TEST",{mykey:"myvalue"}).then(resDelete=>{
+// QueryDelete(undefined,"Walletter","TEST",{mykey:"myvalue"}).then(resDelete=>{
 //      console.log(resDelete);
 // })
 
