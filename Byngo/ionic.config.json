@@ -1,0 +1,7 @@
+{
+  "name": "Byngo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
