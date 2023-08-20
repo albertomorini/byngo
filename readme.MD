@@ -8,7 +8,7 @@ Like a SQL Management Studio but for Mongo instead of SQL-Server.
 
 To create a GUI client for MongoDB, which is extendible and can easily connect to different collection/servers.
 
-The project have to cover the CRUD operation on the [DATA](###CRUD-ON-DATA) of a collection, and CRUD on the [COLLECTION](###CRUD-ON-COLLECTIONS).
+The project have to cover the CRUD operation on the [DATA](#CRUD-ON-DATA) of a collection, and CRUD on the [COLLECTION](#CRUD-ON-COLLECTIONS).
 
 _Work in progress btw_
 

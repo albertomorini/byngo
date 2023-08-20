@@ -1,0 +1,11 @@
+
+
+.myOutput{
+     border: 2px solid black;
+     background-color: #e0dede;
+     color: black;
+     font-size: 17px;
+     border-radius: 5px;
+     width: 100%;
+     height: 300px;
+}
