@@ -1,5 +1,5 @@
 const http = require("http");
-const { QueryInsert, QueryInsertUpdate, QueryUpdate, QueryDelete, CollectionDelete, CollectionCreate, QuerySelect } = require("./mongoExecutor");
+const { QueryInsert, QueryUpdate, QueryDelete, CollectionDelete, CollectionCreate, QuerySelect } = require("./mongoExecutor");
 const port = 2023;
 
 /**
@@ -37,20 +37,19 @@ const server = http.createServer((req,res)=>{
                     sendResponse(res,200,resSelect);
                }).catch(err=>{
                     sendResponse(res,500,err);
-               })
-               
+               });
           }else if(req.url=="QueryInsert"){
                QueryInsert(body.url,body.database,body.collection,body.data).then(resInsert=>{
                     sendResponse(res,200,resInsert);
                }).catch(err=>{
                     sendResponse(res,500,err);
-               })
-          }else if(req.url=="QueryInsertUpdate"){
-               //TODO:
-               QueryInsertUpdate();
+               });
           }else if(req.url=="QueryUpdate"){
-               //TODO:
-               QueryUpdate();
+               QueryUpdate(body.url, body.database, body.collection, body.where,body.newObj,body.upsert).then(resUpdate=>{
+                    sendResponse(res,200,resUpdate);
+               }).catch(err=>{
+                    sendResponse(res,500,err);
+               });
           }else if(req.url="QueryDelete"){
                QueryDelete(body.url,body.database,body.collection,body?.where).then(resDelete=>{
                     sendResponse(res,200,resDelete);
@@ -67,30 +66,8 @@ const server = http.createServer((req,res)=>{
                CollectionDelete();
           }
 
-
      });
 
 })
 
-// server.listen(port);
-
-
-
-////////////////////////////
-//EXAMPLES
-
-QuerySelect(undefined,"Walletter","TEST").then(resquery=>{
-     console.log(resquery)
-})
-
-
-
-// QueryInsert(undefined,"Walletter","TEST",[{mykey:"myvalue"}]).then(resInsert=>{
-//      console.log(resInsert);
-// })
-
-
-// QueryDelete(undefined,"Walletter","TEST",{mykey:"myvalue"}).then(resDelete=>{
-//      console.log(resDelete);
-// })
-
+server.listen(port);
