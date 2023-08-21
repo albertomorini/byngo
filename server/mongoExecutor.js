@@ -19,7 +19,7 @@ function CollectionDelete(){
  * @returns {Promise} the outcome of the query
  */
 function QuerySelect(url="mongodb://localhost:27017/",database,collection,filters={}){
-     const dbLocal = new MongoClient(url+database).db(database);
+     const dbLocal = new MongoClient(url+"/"+database).db(database);
      if ("_id" in filters){ //the filters contains the id, so use the MongoDB ObjectId
           filters._id = new ObjectId(filters?._id);
      }
@@ -35,7 +35,7 @@ function QuerySelect(url="mongodb://localhost:27017/",database,collection,filter
  * @returns {Promise} the outcome of the query
  */
 function QueryInsert(url = "mongodb://localhost:27017/",database, collection, objDataInsert){
-     const dbLocal = new MongoClient(url + database).db(database);
+     const dbLocal = new MongoClient(url+"/"+database).db(database);
      return dbLocal.collection(collection).insertMany(objDataInsert);
 }
 
@@ -48,7 +48,7 @@ function QueryInsert(url = "mongodb://localhost:27017/",database, collection, ob
  * @returns {Promise} the outcome of the query
  */
 function QueryDelete(url = "mongodb://localhost:27017/", database, collection, filters ={}) {
-     const dbLocal = new MongoClient(url + database).db(database);
+     const dbLocal = new MongoClient(url+"/"+database).db(database);
      if ("_id" in filters) { //the filters contains the id, so use the MongoDB ObjectId
           filters._id = new ObjectId(filters?._id)
      }
@@ -66,7 +66,7 @@ function QueryDelete(url = "mongodb://localhost:27017/", database, collection, f
  * @returns 
  */
 function QueryUpdate(url = "mongodb://localhost:27017/",database, collection, filters,newObj,upsertP=false) {
-     const dbLocal = new MongoClient(url + database).db(database);
+     const dbLocal = new MongoClient(url+"/"+database).db(database);
      if ("_id" in filters) { //the filters contains the id, so use the MongoDB ObjectId
           filters._id = new ObjectId(filters?._id)
      }

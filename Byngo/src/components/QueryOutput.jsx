@@ -1,15 +1,20 @@
-import { IonButton, IonIcon, IonItemDivider, IonText, IonTitle } from "@ionic/react";
+import { IonAlert, IonButton, IonIcon, IonItemDivider, IonText, IonTitle } from "@ionic/react";
 import "../theme/Generics.css";
 import "../theme/QueryOutput.css";
-import { clipboard } from 'ionicons/icons';
+import { clipboard , checkmarkCircle} from 'ionicons/icons';
+import { useState } from "react";
 
 
 
-export default function QueryOutput(){
+export default function QueryOutput(props){
+     const [IconButton,setIconButton] = useState(clipboard);
 
      function CopyToClipboard(){
          navigator.clipboard.writeText("TESTTTT");
-
+          setIconButton(checkmarkCircle);
+          setTimeout(() => {
+               setIconButton(clipboard)
+          }, 3000);
      }
 
      return(
@@ -18,13 +23,13 @@ export default function QueryOutput(){
                <IonItemDivider />
                <div className="myOutput">
                     <IonText >
-                         Testtt
+                         {props?.Output}
                     </IonText>
                </div>
                
                <IonButton expand="block" color="warning" mode="ios" onClick={()=>CopyToClipboard()}>
                     Copy to clipboard
-                    <IonIcon icon={clipboard}/>
+                    <IonIcon icon={IconButton}/>
                </IonButton>
           </div>
      )

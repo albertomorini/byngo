@@ -2,13 +2,15 @@ import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonT
 import './QueryTab.css';
 import QueryComposer from "../components/QueryComposer";
 import QueryOutput from "../components/QueryOutput";
+import { useState } from 'react';
 
 export default function QueryTab(){
+  const [Output,setOutput] = useState();
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Query</IonTitle>
+          <IonTitle>Byngo • query section</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -16,11 +18,11 @@ export default function QueryTab(){
           <IonGrid>
             <IonRow>
               <IonCol>
-                <QueryComposer />
+                <QueryComposer setOutput={(obj)=>setOutput(obj)}/>
 
               </IonCol>
               <IonCol>
-                <QueryOutput/>
+                <QueryOutput Output={Output}/>
               </IonCol>
             </IonRow>
           </IonGrid>

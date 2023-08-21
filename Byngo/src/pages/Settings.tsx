@@ -6,7 +6,7 @@ export default function Settings(){
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Settings</IonTitle>
+          <IonTitle>Byngo • settings </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

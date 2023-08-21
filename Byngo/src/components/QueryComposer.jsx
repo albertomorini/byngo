@@ -3,19 +3,32 @@ import "../theme/QueryComposer.css";
 import "../theme/Generics.css";
 import { useState } from 'react';
 import { chevronForward } from 'ionicons/icons';
+import { doRequest } from '../httpRequester';
 
 
-export default function QueryComposer() {
+export default function QueryComposer(props) {
      const [CRUDSelected, setCRUDSelected] = useState("SELECT");
-     const [URL, setURL] = useState();
-     const [DBname, setDBName] = useState();
+     const [URL, setURL] = useState(undefined);
+     const [DBname, setDBName] = useState(undefined);
      const [ColName, setColName] = useState();
 
-     const [FilterBox, setFilterBox] = useState(); //visible for select/delete/update
-     const [NewObjBox, setNewObjBox] = useState(); //for insert/update
-     const [Upsert, setUpsert] = useState(); //Visibile only on UPDATE for upsert update (if not exists, create)
+     const [FilterBox, setFilterBox] = useState({}); //visible for select/delete/update
+     const [NewObjBox, setNewObjBox] = useState({}); //for insert/update
+     const [Upsert, setUpsert] = useState(undefined); //Visibile only on UPDATE for upsert update (if not exists, create)
 
      function execute(){
+          doRequest("Query"+CRUDSelected,{
+               url: URL,
+               database: DBname,
+               collection: ColName,
+               where : FilterBox,
+               data: NewObjBox,
+               upsert: Upsert
+          }).then(res=>res.json()).then(res=>{
+               props.setOutput(JSON.stringify(res, null, 2));
+          }).catch(err=>{
+               console.log(err);
+          })
 
      }
 
@@ -25,11 +38,7 @@ export default function QueryComposer() {
 
                <IonTitle className='myTitle'>Query composer</IonTitle>
                <IonItemDivider />
-
               
-
-               <IonItemDivider />
-
                <IonGrid>
 
                     <IonRow>
@@ -41,7 +50,7 @@ export default function QueryComposer() {
                                    onIonInput={(ev) => setURL(ev.target.value)}
                                    mode='md'
                                    fill='outline'
-                                   placeholder='mongo://localhost:27017/'
+                                   placeholder='mongodb://localhost:27017/'
                               />
                          </IonCol>
                     </IonRow>

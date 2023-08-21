@@ -31,26 +31,26 @@ const server = http.createServer((req,res)=>{
           }catch(Ex){
                //not a JSON
           }
+          if(req.url=="/QuerySELECT"){
 
-          if(req.url=="QuerySelect"){
-               QuerySelect(body.url,body.database, body.collection, body?.where).then(resSelect=>{
+               QuerySelect(body.url,body.database, body.collection,body?.where).then(resSelect=>{
                     sendResponse(res,200,resSelect);
                }).catch(err=>{
                     sendResponse(res,500,err);
                });
-          }else if(req.url=="QueryInsert"){
+          }else if(req.url=="/QueryINSERT"){
                QueryInsert(body.url,body.database,body.collection,body.data).then(resInsert=>{
                     sendResponse(res,200,resInsert);
                }).catch(err=>{
                     sendResponse(res,500,err);
                });
-          }else if(req.url=="QueryUpdate"){
+          }else if(req.url=="/QueryUPDATE"){
                QueryUpdate(body.url, body.database, body.collection, body.where,body.newObj,body.upsert).then(resUpdate=>{
                     sendResponse(res,200,resUpdate);
                }).catch(err=>{
                     sendResponse(res,500,err);
                });
-          }else if(req.url="QueryDelete"){
+          }else if(req.url="/QueryDELETE"){
                QueryDelete(body.url,body.database,body.collection,body?.where).then(resDelete=>{
                     sendResponse(res,200,resDelete);
                }).catch(err=>{
@@ -71,3 +71,6 @@ const server = http.createServer((req,res)=>{
 })
 
 server.listen(port);
+
+
+
