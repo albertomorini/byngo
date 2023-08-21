@@ -13,7 +13,8 @@ The project have to cover the CRUD operation on the [DATA](#CRUD-ON-DATA) of a c
 _Work in progress btw_
 
 UI interface be like:
-[UI](./docs/UI.png)
+
+![UI](./docs/UI.png)
 
 ## Strucutre
 ![struct](./docs/struct.jpeg)
