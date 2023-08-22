@@ -1,12 +1,12 @@
-import { IonAlert, IonButton, IonIcon, IonItemDivider, IonText, IonTitle } from "@ionic/react";
+import { IonButton, IonIcon, IonItemDivider, IonText, IonTitle } from "@ionic/react";
 import "../theme/Generics.css";
 import "../theme/QueryOutput.css";
-import { clipboard , checkmarkCircle} from 'ionicons/icons';
+import { clipboard, checkmarkCircle } from 'ionicons/icons';
 import { useState } from "react";
 
 
 
-export default function QueryOutput(props){
+export default function OutputWindow(props){
      const [IconButton,setIconButton] = useState(clipboard);
 
      function CopyToClipboard(){
@@ -19,7 +19,7 @@ export default function QueryOutput(props){
 
      return(
           <div className="ion-padding">
-               <IonTitle className='myTitle'>Query output</IonTitle>
+               <IonTitle className='myTitle'>Output</IonTitle>
                <IonItemDivider />
                <div className="myOutput">
                     <IonText >

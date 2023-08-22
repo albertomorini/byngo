@@ -1,6 +1,12 @@
 //THIS CLASS IS A BRIDGE FROM HTTPS SERVER AND MONGODB
 const { MongoClient, ObjectId } = require("mongodb"); // we can use ObjectId on finds even if isn't human friendly
 
+
+function CollectionsList(url = "mongodb://localhost:27017/", database){
+     const dbLocal = new MongoClient(url + "/" + database).db(database);
+     return dbLocal.listCollections().toArray();
+}
+
 function CollectionCreate(){
      
 }
@@ -80,5 +86,6 @@ module.exports = {
      QuerySelect:QuerySelect,
      QueryUpdate: QueryUpdate,
      CollectionCreate: CollectionCreate,
-     CollectionDelete: CollectionDelete
+     CollectionDelete: CollectionDelete,
+     CollectionsList: CollectionsList
 }

@@ -4,6 +4,7 @@ import "../theme/Generics.css";
 import { useState } from 'react';
 import { chevronForward } from 'ionicons/icons';
 import { doRequest } from '../httpRequester';
+import CollectionsInput from './CollectionsInput';
 
 
 export default function QueryComposer(props) {
@@ -27,9 +28,8 @@ export default function QueryComposer(props) {
           }).then(res=>res.json()).then(res=>{
                props.setOutput(JSON.stringify(res, null, 2));
           }).catch(err=>{
-               console.log(err);
-          })
-
+               props.setOutput(err);
+          });
      }
 
 
@@ -41,32 +41,11 @@ export default function QueryComposer(props) {
               
                <IonGrid>
 
-                    <IonRow>
-                         <IonCol size="2">
-                              <IonLabel className='horizontalLabel'>MongoDB URL: </IonLabel>
-                         </IonCol>
-                         <IonCol size="10">
-                              <IonInput
-                                   onIonInput={(ev) => setURL(ev.target.value)}
-                                   mode='md'
-                                   fill='outline'
-                                   placeholder='mongodb://localhost:27017/'
-                              />
-                         </IonCol>
-                    </IonRow>
-                    <IonRow>
-                         <IonCol size="2">
-                              <IonLabel className='horizontalLabel'>Database name: </IonLabel>
-                         </IonCol>
-                         <IonCol size="10">
-                              <IonInput
-                                   onIonInput={(ev) => setDBName(ev.target.value)}
-                                   mode='md'
-                                   fill='outline'
-                                   placeholder='Database name'
-                              />
-                         </IonCol>
-                    </IonRow>
+                    <CollectionsInput 
+                         setURL={(str)=>setURL(str)}
+                         setDBName={(str)=>setDBName(str)}
+                    />
+                    
                    
 
                     <IonRow>

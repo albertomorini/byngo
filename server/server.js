@@ -1,5 +1,5 @@
 const http = require("http");
-const { QueryInsert, QueryUpdate, QueryDelete, CollectionDelete, CollectionCreate, QuerySelect } = require("./mongoExecutor");
+const { QueryInsert, QueryUpdate, QueryDelete, CollectionDelete, CollectionCreate, QuerySelect, CollectionsList } = require("./mongoExecutor");
 const port = 2023;
 
 /**
@@ -32,7 +32,6 @@ const server = http.createServer((req,res)=>{
                //not a JSON
           }
           if(req.url=="/QuerySELECT"){
-
                QuerySelect(body.url,body.database, body.collection,body?.where).then(resSelect=>{
                     sendResponse(res,200,resSelect);
                }).catch(err=>{
@@ -50,7 +49,7 @@ const server = http.createServer((req,res)=>{
                }).catch(err=>{
                     sendResponse(res,500,err);
                });
-          }else if(req.url="/QueryDELETE"){
+          }else if(req.url=="/QueryDELETE"){
                QueryDelete(body.url,body.database,body.collection,body?.where).then(resDelete=>{
                     sendResponse(res,200,resDelete);
                }).catch(err=>{
@@ -59,10 +58,16 @@ const server = http.createServer((req,res)=>{
           }
 
           //COLLECTIONS
-          //TODO:
-          if(req.url=="CollectionCreate"){
+
+          if(req.url=="/CollectionCreate"){
                CollectionCreate();
-          }else if(req.url="CollectionDelete"){
+          } else if (req.url =="/CollectionsList"){
+               CollectionsList(body.url,body.database).then(resCL=>{
+                    sendResponse(res,200,resCL);
+               }).catch(err=>{
+                    sendResponse(res,500,err);
+               })
+          }else if(req.url="/CollectionDelete"){
                CollectionDelete();
           }
 
@@ -71,6 +76,3 @@ const server = http.createServer((req,res)=>{
 })
 
 server.listen(port);
-
-
-

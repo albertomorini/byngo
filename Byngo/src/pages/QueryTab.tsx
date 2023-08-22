@@ -1,7 +1,7 @@
 import { IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import './QueryTab.css';
 import QueryComposer from "../components/QueryComposer";
-import QueryOutput from "../components/QueryOutput";
+import OutputWindow from "../components/OutputWindow";
 import { useState } from 'react';
 
 export default function QueryTab(){
@@ -19,10 +19,9 @@ export default function QueryTab(){
             <IonRow>
               <IonCol>
                 <QueryComposer setOutput={(obj)=>setOutput(obj)}/>
-
               </IonCol>
               <IonCol>
-                <QueryOutput Output={Output}/>
+                <OutputWindow Output={Output}/>
               </IonCol>
             </IonRow>
           </IonGrid>
