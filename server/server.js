@@ -58,7 +58,7 @@ const server = http.createServer((req,res)=>{
           }
 
           //COLLECTIONS
-
+          
           if(req.url=="/CollectionCreate"){
                CollectionCreate();
           } else if (req.url =="/CollectionsList"){

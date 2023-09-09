@@ -1,4 +1,4 @@
-import { IonButton, IonIcon, IonItemDivider, IonText, IonTitle } from "@ionic/react";
+import { IonButton, IonContent, IonIcon, IonItemDivider, IonText, IonTitle } from "@ionic/react";
 import "../theme/Generics.css";
 import "../theme/QueryOutput.css";
 import { clipboard, checkmarkCircle } from 'ionicons/icons';
@@ -21,11 +21,11 @@ export default function OutputWindow(props){
           <div className="ion-padding">
                <IonTitle className='myTitle'>Output</IonTitle>
                <IonItemDivider />
-               <div className="myOutput">
+               <IonContent className="myOutput">
                     <IonText >
                          {props?.Output}
                     </IonText>
-               </div>
+               </IonContent>
                
                <IonButton expand="block" color="warning" mode="ios" onClick={()=>CopyToClipboard()}>
                     Copy to clipboard

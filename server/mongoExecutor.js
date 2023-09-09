@@ -3,7 +3,10 @@ const { MongoClient, ObjectId } = require("mongodb"); // we can use ObjectId on 
 
 
 function CollectionsList(url = "mongodb://localhost:27017/", database){
-     const dbLocal = new MongoClient(url + "/" + database).db(database);
+     if(url.charAt(url.length-1)!="/"){
+          url+="/"
+     }
+     const dbLocal = new MongoClient(url  + database).db(database);
      return dbLocal.listCollections().toArray();
 }
 
@@ -11,7 +14,8 @@ function CollectionCreate(){
      
 }
 function CollectionDelete(){
-     
+     const dbLocal = new MongoClient(url + database).db(database);
+     return dbLocal.listCollections().toArray();
 }
 
 ////////////////////
