@@ -1,5 +1,5 @@
 const http = require("http");
-const { QueryInsert, QueryUpdate, QueryDelete, CollectionDelete, CollectionCreate, QuerySelect, CollectionsList } = require("./mongoExecutor");
+const { QueryInsert, QueryUpdate, QueryDelete, CollectionDelete, CollectionCreate, QuerySelect, CollectionsList, CollectionRename } = require("./mongoExecutor");
 const port = 2023;
 
 /**
@@ -77,6 +77,12 @@ const server = http.createServer((req,res)=>{
                }).catch(err=>{
                     sendResponse(res,500,err);
                });
+          }else if(req.url=="/CollectionRename"){
+               CollectionRename(body.url, body.database, body.oldName,body.newName).then(resRC=>{
+                    sendResponse(res,200,resRC);
+               }).catch(err=>{
+                    sendResponse(res,500,err);
+               })
           }
 
      });
