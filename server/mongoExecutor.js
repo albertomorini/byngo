@@ -1,7 +1,11 @@
 //THIS CLASS IS A BRIDGE FROM HTTPS SERVER AND MONGODB
 const { MongoClient, ObjectId } = require("mongodb"); // we can use ObjectId on finds even if isn't human friendly
 
-
+/**
+ * @param {string} url of connection to MongoDB engine
+ * @param {string} database name of db
+ * @returns Array - list of collections inside the db
+ */
 function CollectionsList(url = "mongodb://localhost:27017/", database){
      if(url.charAt(url.length-1)!="/"){
           url+="/"
@@ -10,12 +14,28 @@ function CollectionsList(url = "mongodb://localhost:27017/", database){
      return dbLocal.listCollections().toArray();
 }
 
-function CollectionCreate(){
-     
-}
-function CollectionDelete(){
+/**
+ * 
+ * @param {string} name of new collection
+ * @returns {Promise} outcome of the creation
+ */
+function CollectionCreate(url = "mongodb://localhost:27017/", database, name){
      const dbLocal = new MongoClient(url + database).db(database);
-     return dbLocal.listCollections().toArray();
+     try{
+          dbLocal.createCollection(name).finally(s=>s);
+          return CollectionsList(url,database)
+     }catch(ex){
+          return ex;
+     }
+}
+function CollectionDelete(url = "mongodb://localhost:27017/", database, name){
+     const dbLocal = new MongoClient(url + database).db(database);
+     try{
+          dbLocal.dropCollection(name);
+          return CollectionsList(url,database);
+     }catch(ex){
+          return ex;
+     }
 }
 
 ////////////////////

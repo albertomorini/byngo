@@ -14,7 +14,13 @@ _Work in progress btw_
 
 UI interface be like:
 
+#### Query section
+
 ![UI](./docs/UI.png)
+
+#### Collections management
+
+![UI](./docs/UI_Collection.png)
 
 ## Strucutre
 ![struct](./docs/struct.jpeg)

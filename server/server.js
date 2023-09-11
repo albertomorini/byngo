@@ -60,15 +60,23 @@ const server = http.createServer((req,res)=>{
           //COLLECTIONS
           
           if(req.url=="/CollectionCreate"){
-               CollectionCreate();
+               CollectionCreate(body.url, body.database,body.name).then(resCC=>{
+                    sendResponse(res,200,resCC);
+               }).catch(err=>{
+                    sendResponse(res,500,err);
+               });
           } else if (req.url =="/CollectionsList"){
                CollectionsList(body.url,body.database).then(resCL=>{
                     sendResponse(res,200,resCL);
                }).catch(err=>{
                     sendResponse(res,500,err);
                })
-          }else if(req.url="/CollectionDelete"){
-               CollectionDelete();
+          }else if(req.url=="/CollectionDelete"){
+               CollectionDelete(body.url, body.database, body.name).then(resDC=>{
+                    sendResponse(res,200,resDC);
+               }).catch(err=>{
+                    sendResponse(res,500,err);
+               });
           }
 
      });
