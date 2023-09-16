@@ -1,16 +1,30 @@
 //THIS CLASS IS A BRIDGE FROM HTTPS SERVER AND MONGODB
 const { MongoClient, ObjectId } = require("mongodb"); // we can use ObjectId on finds even if isn't human friendly
 
+
+function writeLog(kind = "DEBUG", message) {
+     console.log(
+          kind + "," +
+          message + "," +
+          Date() + "\n\n"
+     );
+}
+
 /**
  * CHECK URL PATH
  * @param {string} url given by user
  * @returns {string} the correct URL
  */
-function checkURL(url){
-     if(url.charAt(url.length - 1) != "/"){
-          return url+="/"
-     }else{
-          url;
+function checkURL(url) {
+     try {
+          if (url.charAt(url.length - 1) != "/") {
+               return url += "/"
+          } else {
+               return url;
+          }
+     } catch (error) {
+          writeLog("ERROR", error)
+          return error
      }
 }
 
@@ -19,10 +33,15 @@ function checkURL(url){
  * @param {string} database name of db
  * @returns Array - list of collections inside the db
  */
-function CollectionsList(url = "mongodb://localhost:27017/", database){
-     checkURL(url)
-     const dbLocal = new MongoClient(url  + database).db(database);
-     return dbLocal.listCollections().toArray();
+function CollectionsList(url = "mongodb://localhost:27017/", database) {
+     url = checkURL(url)
+     try {
+          const dbLocal = new MongoClient(url + database).db(database);
+          return dbLocal.listCollections().toArray();
+     } catch (error) {
+          writeLog("ERROR", error)
+          return error;
+     }
 }
 
 /**
@@ -31,13 +50,14 @@ function CollectionsList(url = "mongodb://localhost:27017/", database){
  * @param {string} name of new collection
  * @returns Array - list of collections inside the db
  */
-function CollectionCreate(url = "mongodb://localhost:27017/", database, name){
-     checkURL(url)
-     const dbLocal = new MongoClient(url + database).db(database);
-     try{
-          dbLocal.createCollection(name).finally(s=>s);
-          return CollectionsList(url,database)
-     }catch(ex){
+function CollectionCreate(url = "mongodb://localhost:27017/", database, name) {
+     url = checkURL(url)
+     try {
+          const dbLocal = new MongoClient(url + database).db(database);
+          dbLocal.createCollection(name).finally(s => s);
+          return CollectionsList(url, database)
+     } catch (ex) {
+          writeLog("ERROR", ex)
           return ex;
      }
 }
@@ -48,13 +68,14 @@ function CollectionCreate(url = "mongodb://localhost:27017/", database, name){
  * @param {string} name of collection to delete
  * @returns Array - list of collections inside the db
  */
-function CollectionDelete(url = "mongodb://localhost:27017/", database, name){
-     checkURL(url)
-     const dbLocal = new MongoClient(url + database).db(database);
-     try{
+function CollectionDelete(url = "mongodb://localhost:27017/", database, name) {
+     url = checkURL(url)
+     try {
+          const dbLocal = new MongoClient(url + database).db(database);
           dbLocal.dropCollection(name);
-          return CollectionsList(url,database);
-     }catch(ex){
+          return CollectionsList(url, database);
+     } catch (ex) {
+          writeLog("ERROR", ex)
           return ex;
      }
 }
@@ -66,15 +87,16 @@ function CollectionDelete(url = "mongodb://localhost:27017/", database, name){
  * @param {string} newName which will rename the collection
  * @returns Array - list of collections inside the db
  */
-function CollectionRename(url = "mongodb://localhost:27017/", database, oldName,newName){
-     checkURL(url)
-     const dbLocal = new MongoClient(url + database).db(database);
+function CollectionRename(url = "mongodb://localhost:27017/", database, oldName, newName) {
+     url = checkURL(url)
      try {
-          dbLocal.renameCollection(oldName,newName);
-          return CollectionsList(url,database);
+          const dbLocal = new MongoClient(url + database).db(database);
+          dbLocal.renameCollection(oldName, newName);
+          return CollectionsList(url, database);
      } catch (ex) {
+          writeLog("ERROR", ex)
           return ex;
-     }     
+     }
 }
 
 ////////////////////
@@ -87,13 +109,19 @@ function CollectionRename(url = "mongodb://localhost:27017/", database, oldName,
  * @param {object} paramDelete is the WHERE of SQL
  * @returns {Promise} the outcome of the query
  */
-function QuerySelect(url="mongodb://localhost:27017/",database,collection,filters={}){
-     checkURL(url)
-     const dbLocal = new MongoClient(url+"/"+database).db(database);
-     if ("_id" in filters){ //the filters contains the id, so use the MongoDB ObjectId
-          filters._id = new ObjectId(filters?._id);
+function QuerySelect(url = "mongodb://localhost:27017/", database, collection, filters = {}) {
+     url = checkURL(url)
+     try {
+          const dbLocal = new MongoClient(url + "/" + database).db(database);
+          if ("_id" in filters) { //the filters contains the id, so use the MongoDB ObjectId
+               filters._id = new ObjectId(filters?._id);
+          }
+          return dbLocal.collection(collection).find(filters).toArray();
+     } catch (error) {
+          writeLog("ERROR", error)
+          return error;
      }
-     return dbLocal.collection(collection).find(filters).toArray();
+
 }
 
 /**
@@ -104,10 +132,16 @@ function QuerySelect(url="mongodb://localhost:27017/",database,collection,filter
  * @param {Array of objects} paramDelete inser many objects
  * @returns {Promise} the outcome of the query
  */
-function QueryInsert(url = "mongodb://localhost:27017/",database, collection, objDataInsert){
-     checkURL(url)
-     const dbLocal = new MongoClient(url+"/"+database).db(database);
-     return dbLocal.collection(collection).insertMany(objDataInsert);
+function QueryInsert(url = "mongodb://localhost:27017/", database, collection, objDataInsert) {
+     url = checkURL(url)
+     try {
+          const dbLocal = new MongoClient(url + "/" + database).db(database);
+          return dbLocal.collection(collection).insertMany(objDataInsert);
+     } catch (error) {
+          writeLog("ERROR", error)
+          return error;
+     }
+
 }
 
 /**
@@ -118,13 +152,19 @@ function QueryInsert(url = "mongodb://localhost:27017/",database, collection, ob
  * @param {object} paramDelete is the WHERE of SQL
  * @returns {Promise} the outcome of the query
  */
-function QueryDelete(url = "mongodb://localhost:27017/", database, collection, filters ={}) {
-     checkURL(url)
-     const dbLocal = new MongoClient(url+"/"+database).db(database);
-     if ("_id" in filters) { //the filters contains the id, so use the MongoDB ObjectId
-          filters._id = new ObjectId(filters?._id)
+function QueryDelete(url = "mongodb://localhost:27017/", database, collection, filters = {}) {
+     url = checkURL(url)
+     try {
+          const dbLocal = new MongoClient(url + "/" + database).db(database);
+          if ("_id" in filters) { //the filters contains the id, so use the MongoDB ObjectId
+               filters._id = new ObjectId(filters?._id)
+          }
+          return dbLocal.collection(collection).deleteMany(filters);
+     } catch (error) {
+          writeLog("ERROR", error)
+          return error;
      }
-     return dbLocal.collection(collection).deleteMany(filters);
+
 }
 
 /**
@@ -137,20 +177,24 @@ function QueryDelete(url = "mongodb://localhost:27017/", database, collection, f
  * @param {boolean} upsertP if true and the update fails to find documents make an insert
  * @returns 
  */
-function QueryUpdate(url = "mongodb://localhost:27017/",database, collection, filters,newObj,upsertP=false) {
-     checkURL(url)
-     const dbLocal = new MongoClient(url+"/"+database).db(database);
-     if ("_id" in filters) { //the filters contains the id, so use the MongoDB ObjectId
-          filters._id = new ObjectId(filters?._id)
+function QueryUpdate(url = "mongodb://localhost:27017/", database, collection, filters, newObj, upsertP = false) {
+     url = checkURL(url)
+     try {
+          const dbLocal = new MongoClient(url + "/" + database).db(database);
+          if ("_id" in filters) { //the filters contains the id, so use the MongoDB ObjectId
+               filters._id = new ObjectId(filters?._id)
+          }
+          return dbLocal.collection(collection).updateMany(filters, { $set: newObj }, { upsert: upsertP });
+     } catch (error) {
+          writeLog("ERROR", error)
+          return error
      }
-     return dbLocal.collection(collection).updateMany(filters, { $set: newObj},{upsert: upsertP});
 }
-
 
 module.exports = {
      QueryDelete: QueryDelete,
      QueryInsert: QueryInsert,
-     QuerySelect:QuerySelect,
+     QuerySelect: QuerySelect,
      QueryUpdate: QueryUpdate,
      CollectionCreate: CollectionCreate,
      CollectionDelete: CollectionDelete,

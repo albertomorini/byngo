@@ -21,7 +21,7 @@ export default function CollectionsTab() {
                                         <CollectionsManager setOutput={(obj) => setOutput(obj)} />
                                    </IonCol>
                                    <IonCol>
-                                        <OutputWindow Output={Output} />
+                                        <OutputWindow Output={Output} setOutput={(obj) => setOutput(obj)} />
                                    </IonCol>
                               </IonRow>
                          </IonGrid>

@@ -21,7 +21,7 @@ export default function QueryTab(){
                 <QueryComposer setOutput={(obj)=>setOutput(obj)}/>
               </IonCol>
               <IonCol>
-                <OutputWindow Output={Output}/>
+                <OutputWindow Output={Output} setOutput={(obj) => setOutput(obj)} />
               </IonCol>
             </IonRow>
           </IonGrid>
